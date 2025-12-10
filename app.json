@@ -36,7 +36,7 @@
       "output": "false",
       "meta": {
         "title": "World Sync - Interactive 3D World Clock",
-        "description": "Timezones are broken, so I made one that spins when you get bored at work. Explore world timezones on a beautiful 3D globe.",
+        "description": "Spin the world, find your time. Beautiful 3D globe timezone explorer.",
         "keywords": "timezone,world clock,3D globe,interactive,time converter"
       }
     },

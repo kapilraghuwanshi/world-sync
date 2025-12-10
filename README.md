@@ -40,6 +40,9 @@ npm run ios
 npm run android
 ```
 
+## 🎯 Geo Location
+https://get.geojs.io/v1/ip/geo.json is a free IP geolocation API that returns information about the user's location based on their IP address.
+
 ## 🎯 Roadmap
  3D globe with auto-rotation
  Location detection
