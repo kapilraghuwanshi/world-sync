@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
@@ -13,18 +13,41 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kialabs.worldsync",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We need your location to show your local timezone on the globe."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#000000"
       },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "package": "com.kialabs.worldsync",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png",
+      "output": "false",
+      "meta": {
+        "title": "World Sync - Interactive 3D World Clock",
+        "description": "Timezones are broken, so I made one that spins when you get bored at work. Explore world timezones on a beautiful 3D globe.",
+        "keywords": "timezone,world clock,3D globe,interactive,time converter"
+      }
+    },
+    "plugins": [
+      "expo-location"
+    ],
+    "scheme": "worldsync",
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id"
+      }
     }
   }
 }
