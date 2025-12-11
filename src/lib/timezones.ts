@@ -48,22 +48,55 @@ export const MAJOR_TIMEZONES: TimezoneLocation[] = [
   // Asia
   { name: 'Asia/Dubai', city: 'Dubai', country: 'UAE', lat: 25.2048, lng: 55.2708 },
   { name: 'Asia/Kolkata', city: 'Mumbai', country: 'India', lat: 19.0760, lng: 72.8777 },
+  { name: 'Asia/Kolkata', city: 'Delhi', country: 'India', lat: 28.6139, lng: 77.2090 },
+  { name: 'Asia/Kolkata', city: 'Bangalore', country: 'India', lat: 12.9716, lng: 77.5946 },
+  { name: 'Asia/Kolkata', city: 'Chennai', country: 'India', lat: 13.0827, lng: 80.2707 },
   { name: 'Asia/Bangkok', city: 'Bangkok', country: 'Thailand', lat: 13.7563, lng: 100.5018 },
   { name: 'Asia/Singapore', city: 'Singapore', country: 'Singapore', lat: 1.3521, lng: 103.8198 },
   { name: 'Asia/Shanghai', city: 'Shanghai', country: 'China', lat: 31.2304, lng: 121.4737 },
+  { name: 'Asia/Shanghai', city: 'Beijing', country: 'China', lat: 39.9042, lng: 116.4074 },
+  { name: 'Asia/Urumqi', city: 'Urumqi', country: 'China', lat: 43.8256, lng: 87.6168 },
   { name: 'Asia/Tokyo', city: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503 },
   { name: 'Asia/Seoul', city: 'Seoul', country: 'South Korea', lat: 37.5665, lng: 126.9780 },
   { name: 'Asia/Hong_Kong', city: 'Hong Kong', country: 'Hong Kong', lat: 22.3193, lng: 114.1694 },
   { name: 'Asia/Jakarta', city: 'Jakarta', country: 'Indonesia', lat: -6.2088, lng: 106.8456 },
   { name: 'Asia/Manila', city: 'Manila', country: 'Philippines', lat: 14.5995, lng: 120.9842 },
   { name: 'Asia/Tehran', city: 'Tehran', country: 'Iran', lat: 35.6892, lng: 51.3890 },
+  { name: 'Asia/Riyadh', city: 'Riyadh', country: 'Saudi Arabia', lat: 24.7136, lng: 46.6753 },
+  { name: 'Asia/Baghdad', city: 'Baghdad', country: 'Iraq', lat: 33.3152, lng: 44.3661 },
+  { name: 'Asia/Yekaterinburg', city: 'Yekaterinburg', country: 'Russia', lat: 56.8389, lng: 60.6057 },
+  { name: 'Asia/Novosibirsk', city: 'Novosibirsk', country: 'Russia', lat: 55.0084, lng: 82.9357 },
+  { name: 'Asia/Vladivostok', city: 'Vladivostok', country: 'Russia', lat: 43.1150, lng: 131.8855 },
+  
+  // More Americas
+  { name: 'America/Phoenix', city: 'Phoenix', country: 'United States', lat: 33.4484, lng: -112.0740 },
+  { name: 'America/Anchorage', city: 'Anchorage', country: 'United States', lat: 61.2181, lng: -149.9003 },
+  { name: 'America/Havana', city: 'Havana', country: 'Cuba', lat: 23.1136, lng: -82.3666 },
+  { name: 'America/Caracas', city: 'Caracas', country: 'Venezuela', lat: 10.4806, lng: -66.9036 },
+  { name: 'America/Rio_Branco', city: 'Rio Branco', country: 'Brazil', lat: -9.9753, lng: -67.8249 },
+  
+  // More Europe
+  { name: 'Europe/Amsterdam', city: 'Amsterdam', country: 'Netherlands', lat: 52.3676, lng: 4.9041 },
+  { name: 'Europe/Vienna', city: 'Vienna', country: 'Austria', lat: 48.2082, lng: 16.3738 },
+  { name: 'Europe/Stockholm', city: 'Stockholm', country: 'Sweden', lat: 59.3293, lng: 18.0686 },
+  { name: 'Europe/Warsaw', city: 'Warsaw', country: 'Poland', lat: 52.2297, lng: 21.0122 },
+  { name: 'Europe/Bucharest', city: 'Bucharest', country: 'Romania', lat: 44.4268, lng: 26.1025 },
   
   // Oceania
   { name: 'Australia/Sydney', city: 'Sydney', country: 'Australia', lat: -33.8688, lng: 151.2093 },
   { name: 'Australia/Melbourne', city: 'Melbourne', country: 'Australia', lat: -37.8136, lng: 144.9631 },
   { name: 'Australia/Perth', city: 'Perth', country: 'Australia', lat: -31.9505, lng: 115.8605 },
+  { name: 'Australia/Brisbane', city: 'Brisbane', country: 'Australia', lat: -27.4698, lng: 153.0251 },
   { name: 'Pacific/Auckland', city: 'Auckland', country: 'New Zealand', lat: -36.8485, lng: 174.7633 },
   { name: 'Pacific/Honolulu', city: 'Honolulu', country: 'United States', lat: 21.3099, lng: -157.8581 },
+  { name: 'Pacific/Fiji', city: 'Suva', country: 'Fiji', lat: -18.1416, lng: 178.4419 },
+  
+  // Oceans (approximate center points for each ocean)
+  { name: 'Etc/GMT+5', city: 'Atlantic Ocean', country: '🌊 Ocean', lat: 0, lng: -30 },
+  { name: 'Etc/GMT+12', city: 'Pacific Ocean', country: '🌊 Ocean', lat: 0, lng: -170 },
+  { name: 'Etc/GMT-5', city: 'Indian Ocean', country: '🌊 Ocean', lat: -20, lng: 80 },
+  { name: 'Etc/GMT', city: 'Arctic Ocean', country: '🌊 Ocean', lat: 85, lng: 0 },
+  { name: 'Etc/GMT+12', city: 'Southern Ocean', country: '🌊 Ocean', lat: -65, lng: 0 },
 ]
 
 // Calculate distance between two coordinates (Haversine formula)

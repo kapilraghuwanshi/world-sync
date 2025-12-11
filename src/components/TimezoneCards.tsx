@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 26,
     fontWeight: '700',
-    color: '#ffffff',
+    color: '#da8c05ff',
     marginBottom: 4,
   },
   date: {

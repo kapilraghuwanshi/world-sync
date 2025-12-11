@@ -6,7 +6,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated'
 export function Header() {
   return (
     <Animated.View entering={FadeInDown} style={styles.container}>
-      <BlurView intensity={20} tint="light" style={styles.header}>
+      <BlurView intensity={7} tint="light" style={styles.header}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>World S</Text>
           <Text style={styles.thunderEmoji}>⚡</Text>
