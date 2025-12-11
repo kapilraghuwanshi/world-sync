@@ -25,37 +25,63 @@ interface TooltipData {
 
 export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
   const [tooltip, setTooltip] = useState<TooltipData | null>(null)
-  const [rotation, setRotation] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
-  const lastRotation = useRef({ x: 0, y: 0 })
+  const [isPaused, setIsPaused] = useState(false)
+  
+  // Initialize rotation based on user location
+  const phi = (90 - initialLat) * (Math.PI / 180)
+  const theta = (initialLng + 180) * (Math.PI / 180)
+  const initialRotX = phi - Math.PI / 2
+  const initialRotY = -theta
+  
+  const [rotation, setRotation] = useState({ x: initialRotX, y: initialRotY })
+  const lastRotation = useRef({ x: initialRotX, y: initialRotY })
   const lastMousePos = useRef({ x: 0, y: 0 })
   const dragStartPos = useRef({ x: 0, y: 0 })
   const hasMoved = useRef(false)
+  const pauseTimeout = useRef<NodeJS.Timeout | null>(null)
 
-  const handleGlobeClick = (event: ThreeEvent<MouseEvent>) => {
+  // Close tooltip when globe starts rotating (isPaused becomes false)
+  useEffect(() => {
+    if (!isPaused) {
+      setTooltip(null)
+    }
+  }, [isPaused])
+
+  const handleGlobeClick = (event: ThreeEvent<MouseEvent>, meshRef: React.RefObject<THREE.Group>) => {
     // Only show tooltip if user didn't drag
     if (hasMoved.current) {
       hasMoved.current = false
       return
     }
 
-    const point = event.point
-    const radius = 100
-    const lat = 90 - (Math.acos(point.y / radius) * 180 / Math.PI)
-    const lng = ((270 + (Math.atan2(point.x, point.z)) * 180 / Math.PI) % 360) - 180
+    if (!meshRef.current) return
+
+    // Use UV coordinates from the intersection for accurate mapping
+    const uv = event.uv
+    if (!uv) return
+    
+    // Convert UV to lat/lng
+    // UV coordinates: u = 0-1 (longitude), v = 0-1 (latitude from south to north)
+    const lng = (uv.x * 360) - 180  // Convert 0-1 to -180 to 180
+    const lat = (uv.y * 180) - 90   // Convert 0-1 to -90 to 90
 
     const location = findTimezoneByCoordinates(lat, lng)
 
     if (location) {
+      
+      // Stop auto-rotation
+      setIsPaused(true)
+      
       const time = DateTime.now().setZone(location.name).toFormat('HH:mm:ss')
 
-      // Position tooltip
-      const tooltipX = Platform.OS === 'web'
-        ? Math.min(event.nativeEvent.offsetX || event.clientX, width - 170)
-        : Math.min(event.clientX || width / 2, width - 170)
-      const tooltipY = Platform.OS === 'web'
-        ? Math.min(event.nativeEvent.offsetY || event.clientY, height * 0.6 - 150)
-        : Math.min(event.clientY || height / 3, height * 0.6 - 150)
+      // Calculate click position from pointer (normalized -1 to 1)
+      const clickX = ((event.pointer.x + 1) / 2) * width
+      const clickY = ((1 - event.pointer.y) / 2) * height
+      
+      // Position tooltip near click but not off-screen
+      const tooltipX = Math.max(20, Math.min(clickX - 75, width - 170))
+      const tooltipY = Math.max(100, Math.min(clickY - 80, height - 200))
 
       setTooltip({
         city: location.city,
@@ -66,42 +92,75 @@ export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
         y: tooltipY,
       })
 
-      setTimeout(() => setTooltip(null), 4000)
+      // Clear any existing pause timeout
+      if (pauseTimeout.current) {
+        clearTimeout(pauseTimeout.current)
+      }
+
+      // Pause for 10 seconds after click, then resume rotation (tooltip will auto-close)
+      pauseTimeout.current = setTimeout(() => {
+        setIsPaused(false)
+        pauseTimeout.current = null
+      }, 8000)
     }
   }
 
   const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
+    event.stopPropagation()
     setIsDragging(true)
+    setIsPaused(true)
     hasMoved.current = false
-    dragStartPos.current = { x: event.clientX, y: event.clientY }
-    lastMousePos.current = { x: event.clientX, y: event.clientY }
+    
+    // Use pointer property which has x and y
+    const x = event.pointer.x
+    const y = event.pointer.y
+    
+    dragStartPos.current = { x, y }
+    lastMousePos.current = { x, y }
   }
 
   const handlePointerMove = (event: ThreeEvent<PointerEvent>) => {
     if (!isDragging) return
 
-    const deltaX = event.clientX - lastMousePos.current.x
-    const deltaY = event.clientY - lastMousePos.current.y
+    // Use pointer property for normalized coordinates
+    const x = event.pointer.x
+    const y = event.pointer.y
+    
+    const deltaX = x - lastMousePos.current.x
+    const deltaY = y - lastMousePos.current.y
 
-    // Check if actually moved (more than 5 pixels)
-    const totalDist = Math.abs(event.clientX - dragStartPos.current.x) +
-      Math.abs(event.clientY - dragStartPos.current.y)
-    if (totalDist > 5) {
+    // Check if actually moved
+    const totalDist = Math.abs(x - dragStartPos.current.x) +
+      Math.abs(y - dragStartPos.current.y)
+    if (totalDist > 0.01) {
       hasMoved.current = true
     }
 
-    setRotation(prev => ({
-      x: prev.x - deltaY * 0.005,
-      y: prev.y + deltaX * 0.005,
-    }))
+    // Scale movement (pointer is normalized from -1 to 1)
+    const newRotation = {
+      x: lastRotation.current.x - deltaY * 2,
+      y: lastRotation.current.y + deltaX * 2,
+    }
 
-    lastMousePos.current = { x: event.clientX, y: event.clientY }
+    setRotation(newRotation)
+    lastRotation.current = newRotation
+    lastMousePos.current = { x, y }
   }
 
   const handlePointerUp = () => {
     if (isDragging) {
-      lastRotation.current = rotation
       setIsDragging(false)
+      
+      // Clear any existing pause timeout
+      if (pauseTimeout.current) {
+        clearTimeout(pauseTimeout.current)
+      }
+      
+      // Pause for 5 seconds after drag ends
+      pauseTimeout.current = setTimeout(() => {
+        setIsPaused(false)
+        pauseTimeout.current = null
+      }, 5000)
     }
   }
 
@@ -120,6 +179,7 @@ export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
           initialLng={initialLng}
           rotation={rotation}
           isDragging={isDragging}
+          isPaused={isPaused}
           onGlobeClick={handleGlobeClick}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -146,7 +206,8 @@ interface GlobeProps {
   initialLng: number
   rotation: { x: number; y: number }
   isDragging: boolean
-  onGlobeClick: (event: ThreeEvent<MouseEvent>) => void
+  isPaused: boolean
+  onGlobeClick: (event: ThreeEvent<MouseEvent>, meshRef: React.RefObject<THREE.Group>) => void
   onPointerDown: (event: ThreeEvent<PointerEvent>) => void
   onPointerMove: (event: ThreeEvent<PointerEvent>) => void
   onPointerUp: () => void
@@ -157,12 +218,13 @@ function Globe({
   initialLng,
   rotation,
   isDragging,
+  isPaused,
   onGlobeClick,
   onPointerDown,
   onPointerMove,
   onPointerUp
 }: GlobeProps) {
-  const meshRef = useRef<THREE.Mesh>(null)
+  const meshRef = useRef<THREE.Group>(null)
   const autoRotationRef = useRef(0)
 
   const earthTexture = useLoader(
@@ -183,7 +245,8 @@ function Globe({
   )
 
   useEffect(() => {
-    if (meshRef.current) {
+    // Only set initial rotation once when component mounts
+    if (meshRef.current && autoRotationRef.current === 0) {
       const phi = (90 - initialLat) * (Math.PI / 180)
       const theta = (initialLng + 180) * (Math.PI / 180)
 
@@ -191,49 +254,115 @@ function Globe({
       meshRef.current.rotation.y = -theta
       autoRotationRef.current = meshRef.current.rotation.y
     }
-  }, [initialLat, initialLng])
+  }, [])
 
   useFrame((state, delta) => {
-    if (meshRef.current) {
+    if (!meshRef.current) return
+
+    try {
       if (isDragging) {
-        // Apply manual rotation during drag
-        meshRef.current.rotation.x = rotation.x
-        meshRef.current.rotation.y = rotation.y
-        autoRotationRef.current = rotation.y
-      } else {
-        // Auto-rotate when not dragging
+        // Apply manual rotation during drag with safe values
+        const clampedX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, rotation.x))
+        const normalizedY = rotation.y % (Math.PI * 2)
+        
+        meshRef.current.rotation.x = clampedX
+        meshRef.current.rotation.y = normalizedY
+        autoRotationRef.current = normalizedY
+      } else if (!isPaused) {
+        // Auto-rotate only when not paused
         autoRotationRef.current += delta * 0.1
         meshRef.current.rotation.y = autoRotationRef.current
       }
-
-      // Clamp X rotation to prevent upside-down
-      meshRef.current.rotation.x = Math.max(
-        -Math.PI / 2,
-        Math.min(Math.PI / 2, meshRef.current.rotation.x)
-      )
+    } catch (error) {
+      console.error('Error updating globe rotation:', error)
     }
   })
 
   return (
-    <mesh
-      ref={meshRef}
-      onClick={onGlobeClick}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-      onPointerLeave={onPointerUp}
-    >
-      <sphereGeometry args={[100, 64, 64]} />
-      <meshPhongMaterial
-         map={earthTexture}
-        bumpMap={bumpTexture}
-        bumpScale={1.0}
-        specularMap={specularTexture}
-        specular={new THREE.Color('#666666')}
-        shininess={15}
-      />
-    </mesh>
+    <group ref={meshRef}>
+      <mesh
+        onClick={(e) => onGlobeClick(e, meshRef)}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerLeave={onPointerUp}
+      >
+        <sphereGeometry args={[100, 64, 64]} />
+        <meshPhongMaterial
+           map={earthTexture}
+          bumpMap={bumpTexture}
+          bumpScale={1.0}
+          specularMap={specularTexture}
+          specular={new THREE.Color('#666666')}
+          shininess={15}
+        />
+      </mesh>
+      
+      {/* Equator line */}
+      <Equator />
+      
+      {/* Prime Meridian line */}
+      <PrimeMeridian />
+    </group>
   )
+}
+
+function Equator() {
+  const points = []
+  const radius = 101 // Slightly larger than globe to be visible
+  
+  for (let i = 0; i <= 360; i += 2) {
+    const angle = (i * Math.PI) / 180
+    points.push(
+      new THREE.Vector3(
+        radius * Math.cos(angle),
+        0,
+        radius * Math.sin(angle)
+      )
+    )
+  }
+  
+  const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
+  const lineMaterial = new THREE.LineBasicMaterial({ 
+    color: '#FFD700', 
+    transparent: true, 
+    opacity: 0.6,
+    linewidth: 2
+  })
+  const line = new THREE.Line(lineGeometry, lineMaterial)
+  
+  return <primitive object={line} />
+}
+
+function PrimeMeridian() {
+  const points = []
+  const radius = 101
+  
+  // Prime Meridian runs from North to South pole through Greenwich (0° longitude)
+  // In spherical coordinates: longitude = 0° means x and z relationship
+  for (let i = 0; i <= 360; i += 2) {
+    const angle = (i * Math.PI) / 180
+    // For Prime Meridian: vary latitude (y), keep longitude at 0
+    // At lng=0: x should relate to z based on texture orientation
+    points.push(
+      new THREE.Vector3(
+        radius * Math.sin(angle), // x varies with latitude for meridian
+        radius * Math.cos(angle), // y is the vertical (latitude)
+        0 // z = 0 for the front-facing meridian (0° longitude)
+      )
+    )
+  }
+  
+  const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
+  const lineMaterial = new THREE.LineBasicMaterial({ 
+    color: '#FFD700', 
+    transparent: true, 
+    opacity: 0.6,
+    linewidth: 2
+  })
+  const line = new THREE.Line(lineGeometry, lineMaterial)
+  
+  return <primitive object={line} />
 }
 
 function Stars() {
@@ -266,7 +395,7 @@ function Stars() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    position: 'relative',
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 0,
   },
 })

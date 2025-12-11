@@ -80,11 +80,11 @@ function TimezoneCard({ timezone }: { timezone: string }) {
               </View>
             )}
           </View>
-          
+
           <Text style={styles.time}>{time}</Text>
           <Text style={styles.date}>{date}</Text>
           <Text style={styles.offset}>{offset}</Text>
-          
+
           <View style={styles.shareButton}>
             <Share2 size={16} color="#ffffff80" />
           </View>
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     bottom: 40,
     left: 0,
     right: 0,
+    zIndex: 10,  // Add this
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
@@ -153,13 +154,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   time: {
-    fontSize: 32,
+    fontSize: 26,
     fontWeight: '700',
     color: '#ffffff',
     marginBottom: 4,
   },
   date: {
-    fontSize: 12,
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     marginBottom: 4,
   },

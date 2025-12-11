@@ -13,7 +13,6 @@ export async function detectUserLocation(): Promise<UserLocation | null> {
     const { status } = await Location.requestForegroundPermissionsAsync()
     
     if (status !== 'granted') {
-      console.log('Location permission denied, using IP fallback')
       return await getLocationFromIP()
     }
 

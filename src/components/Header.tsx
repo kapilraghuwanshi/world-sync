@@ -7,7 +7,11 @@ export function Header() {
   return (
     <Animated.View entering={FadeInDown} style={styles.container}>
       <BlurView intensity={20} tint="light" style={styles.header}>
-        <Text style={styles.title}>🌍 World Sync</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>World S</Text>
+          <Text style={styles.thunderEmoji}>⚡</Text>
+          <Text style={styles.title}>nc</Text>
+        </View>
         <Text style={styles.subtitle}>Spin the world, find your timezone in a blink!</Text>
       </BlurView>
     </Animated.View>
@@ -17,7 +21,7 @@ export function Header() {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 20,
+    top: 25,
     left: 0,
     right: 0,
     zIndex: 10,
@@ -32,16 +36,30 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   title: {
-    fontSize: 24,
-    fontWeight: '700',
+    fontSize: 28,
+    fontWeight: '800',
     color: '#ffffff',
-    textAlign: 'center',
+    letterSpacing: 1,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  thunderEmoji: {
+    fontSize: 26,
+    marginHorizontal: -2,
+    transform: [{ translateY: 7 }, { rotate: '180deg' }],
   },
   subtitle: {
-    fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.6)',
-    marginTop: 2,
+    fontSize: 13,
+    color: 'rgba(255, 255, 255, 0.7)',
+    marginTop: 4,
     textAlign: 'center',
+    fontWeight: '400',
+    letterSpacing: 0.5,
   },
 })

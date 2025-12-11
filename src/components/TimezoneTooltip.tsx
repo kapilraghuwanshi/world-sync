@@ -27,12 +27,12 @@ export function TimezoneTooltip({
       exiting={FadeOut.duration(200)}
       style={[styles.container, { left: x, top: y }]}
     >
-      <BlurView intensity={30} tint="light" style={styles.tooltip}>
+      <View style={styles.tooltip}>
         <Text style={styles.city}>{city}</Text>
         <Text style={styles.country}>{country}</Text>
         <Text style={styles.time}>{currentTime}</Text>
         <Text style={styles.timezone}>{timezone}</Text>
-      </BlurView>
+      </View>
     </Animated.View>
   )
 }
@@ -40,15 +40,17 @@ export function TimezoneTooltip({
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    zIndex: 1000,
+    zIndex: 100,
+    pointerEvents: 'none',
   },
   tooltip: {
     borderRadius: 12,
     padding: 12,
     minWidth: 150,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: 'rgba(255, 255, 255, 0.35)',
     overflow: 'hidden',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   city: {
     fontSize: 16,

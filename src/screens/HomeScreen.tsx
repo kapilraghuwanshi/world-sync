@@ -35,11 +35,8 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Space Background Gradient */}
-
       {/* 3D Globe */}
       <View style={styles.globeContainer}>
-        
         <GlobeView
           initialLat={userLocation?.latitude || 20}
           initialLng={userLocation?.longitude || 0}
@@ -60,16 +57,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
   },
-  background: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-  },
   globeContainer: {
-    flex: 1,
+    flex: 1,  // Keep it as flex: 1, not position: absolute
     width: width,
-    height: height * 0.6,
   },
 })
