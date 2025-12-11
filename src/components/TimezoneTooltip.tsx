@@ -27,7 +27,7 @@ export function TimezoneTooltip({
       exiting={FadeOut.duration(200)}
       style={[styles.container, { left: x, top: y }]}
     >
-      <BlurView intensity={30} tint="dark" style={styles.tooltip}>
+      <BlurView intensity={30} tint="light" style={styles.tooltip}>
         <Text style={styles.city}>{city}</Text>
         <Text style={styles.country}>{country}</Text>
         <Text style={styles.time}>{currentTime}</Text>

@@ -36,15 +36,10 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       {/* Space Background Gradient */}
-      <LinearGradient
-        colors={['#000000', '#0a0a2e', '#16213e', '#0f3460']}
-        style={styles.background}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-      />
 
       {/* 3D Globe */}
       <View style={styles.globeContainer}>
+        
         <GlobeView
           initialLat={userLocation?.latitude || 20}
           initialLng={userLocation?.longitude || 0}

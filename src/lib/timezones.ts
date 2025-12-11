@@ -1,3 +1,4 @@
+// src/lib/timezones.ts
 import { DateTime } from 'luxon';
 
 export interface TimezoneLocation {
@@ -8,32 +9,39 @@ export interface TimezoneLocation {
   lng: number
 }
 
-// Top 24 major timezones with coordinates
-export const MAJOR_TIMEZONES = [
-  { name: 'America/New_York', lat: 40.7128, lng: -74.0060, city: 'New York' },
-  { name: 'America/Los_Angeles', lat: 34.0522, lng: -118.2437, city: 'Los Angeles' },
-  { name: 'America/Chicago', lat: 41.8781, lng: -87.6298, city: 'Chicago' },
-  { name: 'America/Denver', lat: 39.7392, lng: -104.9903, city: 'Denver' },
-  { name: 'America/Toronto', lat: 43.6532, lng: -79.3832, city: 'Toronto' },
-  { name: 'America/Mexico_City', lat: 19.4326, lng: -99.1332, city: 'Mexico City' },
-  { name: 'America/Sao_Paulo', lat: -23.5505, lng: -46.6333, city: 'São Paulo' },
-  { name: 'Europe/London', lat: 51.5074, lng: -0.1278, city: 'London' },
-  { name: 'Europe/Paris', lat: 48.8566, lng: 2.3522, city: 'Paris' },
-  { name: 'Europe/Berlin', lat: 52.5200, lng: 13.4050, city: 'Berlin' },
-  { name: 'Europe/Moscow', lat: 55.7558, lng: 37.6173, city: 'Moscow' },
-  { name: 'Africa/Cairo', lat: 30.0444, lng: 31.2357, city: 'Cairo' },
-  { name: 'Africa/Johannesburg', lat: -26.2041, lng: 28.0473, city: 'Johannesburg' },
-  { name: 'Asia/Dubai', lat: 25.2048, lng: 55.2708, city: 'Dubai' },
-  { name: 'Asia/Kolkata', lat: 28.7041, lng: 77.1025, city: 'Mumbai' },
-  { name: 'Asia/Bangkok', lat: 13.7563, lng: 100.5018, city: 'Bangkok' },
-  { name: 'Asia/Singapore', lat: 1.3521, lng: 103.8198, city: 'Singapore' },
-  { name: 'Asia/Shanghai', lat: 31.2304, lng: 121.4737, city: 'Shanghai' },
-  { name: 'Asia/Tokyo', lat: 35.6762, lng: 139.6503, city: 'Tokyo' },
-  { name: 'Asia/Seoul', lat: 37.5665, lng: 126.9780, city: 'Seoul' },
-  { name: 'Australia/Sydney', lat: -33.8688, lng: 151.2093, city: 'Sydney' },
-  { name: 'Australia/Melbourne', lat: -37.8136, lng: 144.9631, city: 'Melbourne' },
-  { name: 'Pacific/Auckland', lat: -36.8485, lng: 174.7633, city: 'Auckland' },
-  { name: 'Pacific/Honolulu', lat: 21.3099, lng: -157.8581, city: 'Honolulu' },
+// Extended timezone data with country info
+export const MAJOR_TIMEZONES: TimezoneLocation[] = [
+  { name: 'America/New_York', city: 'New York', country: 'United States', lat: 40.7128, lng: -74.0060 },
+  { name: 'America/Los_Angeles', city: 'Los Angeles', country: 'United States', lat: 34.0522, lng: -118.2437 },
+  { name: 'America/Chicago', city: 'Chicago', country: 'United States', lat: 41.8781, lng: -87.6298 },
+  { name: 'America/Denver', city: 'Denver', country: 'United States', lat: 39.7392, lng: -104.9903 },
+  { name: 'America/Toronto', city: 'Toronto', country: 'Canada', lat: 43.6532, lng: -79.3832 },
+  { name: 'America/Mexico_City', city: 'Mexico City', country: 'Mexico', lat: 19.4326, lng: -99.1332 },
+  { name: 'America/Sao_Paulo', city: 'São Paulo', country: 'Brazil', lat: -23.5505, lng: -46.6333 },
+  { name: 'America/Buenos_Aires', city: 'Buenos Aires', country: 'Argentina', lat: -34.6037, lng: -58.3816 },
+  { name: 'Europe/London', city: 'London', country: 'United Kingdom', lat: 51.5074, lng: -0.1278 },
+  { name: 'Europe/Paris', city: 'Paris', country: 'France', lat: 48.8566, lng: 2.3522 },
+  { name: 'Europe/Berlin', city: 'Berlin', country: 'Germany', lat: 52.5200, lng: 13.4050 },
+  { name: 'Europe/Rome', city: 'Rome', country: 'Italy', lat: 41.9028, lng: 12.4964 },
+  { name: 'Europe/Madrid', city: 'Madrid', country: 'Spain', lat: 40.4168, lng: -3.7038 },
+  { name: 'Europe/Moscow', city: 'Moscow', country: 'Russia', lat: 55.7558, lng: 37.6173 },
+  { name: 'Africa/Cairo', city: 'Cairo', country: 'Egypt', lat: 30.0444, lng: 31.2357 },
+  { name: 'Africa/Lagos', city: 'Lagos', country: 'Nigeria', lat: 6.5244, lng: 3.3792 },
+  { name: 'Africa/Johannesburg', city: 'Johannesburg', country: 'South Africa', lat: -26.2041, lng: 28.0473 },
+  { name: 'Africa/Nairobi', city: 'Nairobi', country: 'Kenya', lat: -1.2864, lng: 36.8172 },
+  { name: 'Asia/Dubai', city: 'Dubai', country: 'UAE', lat: 25.2048, lng: 55.2708 },
+  { name: 'Asia/Kolkata', city: 'Mumbai', country: 'India', lat: 19.0760, lng: 72.8777 },
+  { name: 'Asia/Bangkok', city: 'Bangkok', country: 'Thailand', lat: 13.7563, lng: 100.5018 },
+  { name: 'Asia/Singapore', city: 'Singapore', country: 'Singapore', lat: 1.3521, lng: 103.8198 },
+  { name: 'Asia/Shanghai', city: 'Shanghai', country: 'China', lat: 31.2304, lng: 121.4737 },
+  { name: 'Asia/Tokyo', city: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503 },
+  { name: 'Asia/Seoul', city: 'Seoul', country: 'South Korea', lat: 37.5665, lng: 126.9780 },
+  { name: 'Asia/Hong_Kong', city: 'Hong Kong', country: 'Hong Kong', lat: 22.3193, lng: 114.1694 },
+  { name: 'Australia/Sydney', city: 'Sydney', country: 'Australia', lat: -33.8688, lng: 151.2093 },
+  { name: 'Australia/Melbourne', city: 'Melbourne', country: 'Australia', lat: -37.8136, lng: 144.9631 },
+  { name: 'Australia/Perth', city: 'Perth', country: 'Australia', lat: -31.9505, lng: 115.8605 },
+  { name: 'Pacific/Auckland', city: 'Auckland', country: 'New Zealand', lat: -36.8485, lng: 174.7633 },
+  { name: 'Pacific/Honolulu', city: 'Honolulu', country: 'United States', lat: 21.3099, lng: -157.8581 },
 ]
 
 // Calculate distance between two coordinates (Haversine formula)
@@ -78,6 +86,7 @@ export function findTimezoneByCoordinates(lat: number, lng: number): TimezoneLoc
       nearest = location
     }
   }
+  
   // Only return if within reasonable distance (1500km)
-  return minDistance < 1500 ? nearest : null
+  return minDistance < 1500 ? { ...nearest } : null
 }
