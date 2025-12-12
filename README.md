@@ -4,6 +4,8 @@
 
 Interactive 3D globe to explore world timezones in real-time. Built with Expo for web, iOS, and Android.
 
+https://github.com/user-attachments/assets/b7f1475c-a48c-4e49-93b5-94b7113d2fd9
+
 ## 📦 Tech Stack
 - **Expo** ~54.0.27 - Universal app framework
 - **React Native** 0.76.5 + **TypeScript**
@@ -113,3 +115,6 @@ Create your feature branch
 Commit your changes
 Push to the branch
 Open a Pull Request
+
+
+<img width="1208" height="910" alt="World Sync" src="https://github.com/user-attachments/assets/d4361379-02d9-4b6c-b506-b37a0bed216b" />
