@@ -8,13 +8,8 @@ export function Header() {
     <Animated.View entering={FadeInDown} style={styles.container}>
       <BlurView intensity={7} tint="light" style={styles.header}>
         <View style={styles.logoRow}>
-          <Image 
-            source={require('../../assets/icon.png')} 
-            style={styles.logo}
-            resizeMode="contain"
-          />
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>World S</Text>
+            <Text style={styles.title}>🌍 World S</Text>
             <Text style={styles.thunderEmoji}>⚡</Text>
             <Text style={styles.title}>nc</Text>
           </View>
@@ -67,14 +62,13 @@ const styles = StyleSheet.create({
     textShadowRadius: 4,
   },
   thunderEmoji: {
-    fontSize: 26,
+    fontSize: 30,
     marginHorizontal: -2,
     transform: [{ translateY: 7 }, { rotate: '180deg' }],
   },
   subtitle: {
     fontSize: 13,
     color: 'rgba(255, 255, 255, 0.7)',
-    marginTop: 4,
     textAlign: 'center',
     fontWeight: '400',
     letterSpacing: 0.5,

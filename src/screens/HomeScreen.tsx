@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Dimensions, Platform, Pressable, Linking } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Mail } from 'lucide-react-native'
+import { Mail, Linkedin, Twitter, Github } from 'lucide-react-native'
 import { GlobeView } from '../components/GlobeView'
 import { Header } from '../components/Header'
 import { TimezoneCards } from '../components/TimezoneCards'
@@ -12,7 +12,12 @@ import { getNearbyTimezones } from '../lib/timezones'
 const { width, height } = Dimensions.get('window')
 
 export default function HomeScreen() {
-  const [nearbyTimezones, setNearbyTimezones] = useState<string[]>([])
+  const [nearbyTimezones, setNearbyTimezones] = useState<string[]>([
+    'America/New_York',
+    'Europe/London',
+    'Asia/Tokyo',
+    'Asia/Kolkata',
+  ])
   const { setUserLocation, userLocation } = useLocationStore()
 
   useEffect(() => {
@@ -22,15 +27,8 @@ export default function HomeScreen() {
         setUserLocation(location)
         const nearby = getNearbyTimezones(location.latitude, location.longitude, 4)
         setNearbyTimezones(nearby)
-      } else {
-        // Default: Show popular timezones
-        setNearbyTimezones([
-          'America/New_York',
-          'Europe/London',
-          'Asia/Tokyo',
-          'Australia/Sydney',
-        ])
       }
+      // If location is null, keep the default timezones
     })
   }, [])
 
@@ -54,12 +52,32 @@ export default function HomeScreen() {
       <View style={styles.footer}>
         <View style={styles.footerContent}>
           <Text style={styles.footerText}>Made with ❤️ in India by Kia Labs</Text>
-          <Pressable 
-            style={styles.emailButton}
-            onPress={() => Linking.openURL('mailto:kapilraghuwanshi5@gmail.com')}
-          >
-            <Mail size={14} color="rgba(255, 255, 255, 0.4)" />
-          </Pressable>
+          <View style={styles.socialButtons}>
+            <Pressable 
+              style={styles.socialButton}
+              onPress={() => Linking.openURL('mailto:kapilraghuwanshi5@gmail.com')}
+            >
+              <Mail size={14} color="rgba(255, 255, 255, 0.5)" />
+            </Pressable>
+            <Pressable 
+              style={styles.socialButton}
+              onPress={() => Linking.openURL('https://linkedin.com/in/kapilraghuwanshi')}
+            >
+              <Linkedin size={14} color="rgba(255, 255, 255, 0.5)" />
+            </Pressable>
+            <Pressable 
+              style={styles.socialButton}
+              onPress={() => Linking.openURL('https://twitter.com/kapilraghuwanshi')}
+            >
+              <Twitter size={14} color="rgba(255, 255, 255, 0.5)" />
+            </Pressable>
+            <Pressable 
+              style={styles.socialButton}
+              onPress={() => Linking.openURL('https://github.com/kapilraghuwanshi')}
+            >
+              <Github size={14} color="rgba(255, 255, 255, 0.5)" />
+            </Pressable>
+          </View>
         </View>
       </View>
     </View>
