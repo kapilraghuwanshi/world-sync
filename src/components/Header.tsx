@@ -12,9 +12,9 @@ export function Header() {
       <BlurView intensity={7} tint="light" style={styles.header}>
         <View style={styles.logoRow}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>🌍 World S</Text>
+            <Text style={styles.title}>🌍 WORLD S</Text>
             <Text style={styles.thunderEmoji}>⚡</Text>
-            <Text style={styles.title}>nc</Text>
+            <Text style={styles.title}>NC</Text>
           </View>
         </View>
         <Text style={styles.subtitle}>Spin the world, find your timezone in a blink!</Text>
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
-    padding: isSmallScreen ? 8 : 10,
+    padding: isSmallScreen ? 4 : 6,
     alignItems: 'center',
   },
   logoRow: {
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: isSmallScreen ? 18 : 25,
+    fontSize: isSmallScreen ? 16 : 22,
     fontWeight: '800',
     color: '#ffffff',
     letterSpacing: isSmallScreen ? 0.5 : 1,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   thunderEmoji: {
     fontSize: isSmallScreen ? 22 : 30,
     marginHorizontal: -2,
-    transform: [{ translateY: isSmallScreen ? 5 : 7 }, { rotate: '180deg' }],
+    transform: [{ translateY: isSmallScreen ? 5 : 7 }],
   },
   subtitle: {
     fontSize: isSmallScreen ? 10 : 13,
