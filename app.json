@@ -1,17 +1,19 @@
 {
   "expo": {
-    "name": "world-sync",
+    "name": "World Sync",
     "slug": "world-sync",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
+    "description": "Spin the world, find your timezone in a blink! Interactive 3D globe with live timezone data.",
+    "primaryColor": "#000000",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.kialabs.worldsync",
