@@ -170,9 +170,9 @@ export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
         camera={{ position: [0, 0, 300], fov: 50 }}
         gl={{ antialias: true, alpha: true }}
       >
-        <ambientLight intensity={0.6} />
-        <pointLight position={[300, 300, 300]} intensity={1} />
-        <pointLight position={[-300, -300, -300]} intensity={0.3} />
+        <ambientLight intensity={2.2} />
+        <pointLight position={[300, 300, 300]} intensity={2.5} />
+        <pointLight position={[-300, -300, -300]} intensity={1.5} />
         <Stars />
         <Globe
           initialLat={initialLat}
