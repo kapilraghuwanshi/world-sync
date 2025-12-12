@@ -13,7 +13,10 @@ export async function detectUserLocation(): Promise<UserLocation | null> {
     const { status } = await Location.requestForegroundPermissionsAsync()
     
     if (status !== 'granted') {
-      // Don't use IP geolocation - return null to show default timezones
+      // On web, try IP geolocation; on mobile, return null for defaults
+      if (Platform.OS === 'web') {
+        return await getLocationFromIP()
+      }
       return null
     }
 
@@ -32,7 +35,10 @@ export async function detectUserLocation(): Promise<UserLocation | null> {
     }
   } catch (error) {
     console.error('Error getting location:', error)
-    // Return null instead of IP fallback to show default timezones
+    // On web, try IP geolocation as fallback
+    if (Platform.OS === 'web') {
+      return await getLocationFromIP()
+    }
     return null
   }
 }

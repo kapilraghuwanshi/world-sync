@@ -112,7 +112,7 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c
 }
 
-// Get N nearest timezones to user's location
+// Get N nearest timezones to user's location with diverse UTC offsets
 export function getNearbyTimezones(lat: number, lng: number, count: number = 4): string[] {
   const distances = MAJOR_TIMEZONES.map(tz => ({
     ...tz,
@@ -120,7 +120,39 @@ export function getNearbyTimezones(lat: number, lng: number, count: number = 4):
   }))
 
   distances.sort((a, b) => a.distance - b.distance)
-  return distances.slice(0, count).map(tz => tz.name)
+  
+  // Get the nearest timezone first
+  const result: string[] = [distances[0].name]
+  const usedOffsets = new Set<number>()
+  
+  // Add its UTC offset to avoid duplicates
+  const firstOffset = DateTime.now().setZone(distances[0].name).offset
+  usedOffsets.add(firstOffset)
+  
+  // Find diverse timezones with different UTC offsets
+  for (const tz of distances.slice(1)) {
+    if (result.length >= count) break
+    
+    const offset = DateTime.now().setZone(tz.name).offset
+    // Only add if it has a different UTC offset (at least 30 min difference)
+    if (!Array.from(usedOffsets).some(usedOffset => Math.abs(offset - usedOffset) < 30)) {
+      result.push(tz.name)
+      usedOffsets.add(offset)
+    }
+  }
+  
+  // If we still don't have enough diverse timezones, add some defaults
+  if (result.length < count) {
+    const defaults = ['America/New_York', 'Europe/London', 'Asia/Tokyo', 'Australia/Sydney']
+    for (const defaultTz of defaults) {
+      if (result.length >= count) break
+      if (!result.includes(defaultTz)) {
+        result.push(defaultTz)
+      }
+    }
+  }
+  
+  return result.slice(0, count)
 }
 
 // Check if timezone is currently in DST

@@ -67,7 +67,7 @@ export default function HomeScreen() {
             </Pressable>
             <Pressable 
               style={styles.socialButton}
-              onPress={() => Linking.openURL('https://twitter.com/kapilraghuwanshi')}
+              onPress={() => Linking.openURL('https://x.com/techygeeeky')}
             >
               <Twitter size={14} color="rgba(255, 255, 255, 0.5)" />
             </Pressable>
@@ -111,7 +111,12 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     color: "orange"
   },
-  emailButton: {
+  socialButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  socialButton: {
     padding: 4,
     opacity: 0.7,
   },
