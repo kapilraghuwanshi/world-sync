@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 10,
-    color: 'rgba(255, 255, 255, 0.4)',
     fontWeight: '300',
+    color: "orange"
   },
   emailButton: {
     padding: 4,

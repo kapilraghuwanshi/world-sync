@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import { BlurView } from 'expo-blur'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 
@@ -7,10 +7,17 @@ export function Header() {
   return (
     <Animated.View entering={FadeInDown} style={styles.container}>
       <BlurView intensity={7} tint="light" style={styles.header}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>World S</Text>
-          <Text style={styles.thunderEmoji}>⚡</Text>
-          <Text style={styles.title}>nc</Text>
+        <View style={styles.logoRow}>
+          <Image 
+            source={require('../../assets/icon.png')} 
+            style={styles.logo}
+            resizeMode="contain"
+          />
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>World S</Text>
+            <Text style={styles.thunderEmoji}>⚡</Text>
+            <Text style={styles.title}>nc</Text>
+          </View>
         </View>
         <Text style={styles.subtitle}>Spin the world, find your timezone in a blink!</Text>
       </BlurView>
@@ -35,6 +42,16 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.2)',
     padding: 10,
     alignItems: 'center',
+  },
+  logoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  logo: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
   },
   titleContainer: {
     flexDirection: 'row',
