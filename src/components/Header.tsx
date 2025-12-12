@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Platform } from 'react-native'
 import { BlurView } from 'expo-blur'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 
@@ -23,7 +23,7 @@ export function Header() {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 25,
+    top: Platform.OS === 'web' ? 25 : 15,
     left: 0,
     right: 0,
     zIndex: 10,
@@ -31,46 +31,46 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    borderRadius: 15,
+    borderRadius: Platform.OS === 'web' ? 15 : 12,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
-    padding: 10,
+    padding: Platform.OS === 'web' ? 10 : 8,
     alignItems: 'center',
   },
   logoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: Platform.OS === 'web' ? 8 : 6,
   },
   logo: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: Platform.OS === 'web' ? 36 : 28,
+    height: Platform.OS === 'web' ? 36 : 28,
+    borderRadius: Platform.OS === 'web' ? 18 : 14,
   },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   title: {
-    fontSize: 28,
+    fontSize: Platform.OS === 'web' ? 28 : 20,
     fontWeight: '800',
     color: '#ffffff',
-    letterSpacing: 1,
+    letterSpacing: Platform.OS === 'web' ? 1 : 0.5,
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
   },
   thunderEmoji: {
-    fontSize: 30,
+    fontSize: Platform.OS === 'web' ? 30 : 22,
     marginHorizontal: -2,
-    transform: [{ translateY: 7 }, { rotate: '180deg' }],
+    transform: [{ translateY: Platform.OS === 'web' ? 7 : 5 }, { rotate: '180deg' }],
   },
   subtitle: {
-    fontSize: 13,
+    fontSize: Platform.OS === 'web' ? 13 : 10,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
     fontWeight: '400',
-    letterSpacing: 0.5,
+    letterSpacing: Platform.OS === 'web' ? 0.5 : 0.3,
   },
 })

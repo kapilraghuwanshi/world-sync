@@ -53,17 +53,21 @@ function TimezoneCard({ timezone }: { timezone: string }) {
 
   const handleShare = async () => {
     if (Platform.OS === 'web') {
-      const url = `${window.location.origin}/tz/${timezone}`
+      const shareText = `Check out ${cityName} timezone: ${time} (${offset})\n${window.location.origin} World Sync by Tech Monk Kapil`
       if (navigator.share) {
-        await navigator.share({ url, title: `Timezone: ${timezone}` })
+        await navigator.share({ 
+          text: shareText,
+          title: `${cityName} Time - World Sync`,
+          url: window.location.origin
+        })
       } else {
-        await navigator.clipboard.writeText(url)
+        await navigator.clipboard.writeText(shareText)
+        // Could add a toast notification here
       }
     } else {
       const { Share } = await import('react-native')
       Share.share({
-        message: `Check out ${cityName} timezone: ${time}`,
-        url: `worldsync://tz/${timezone}`,
+        message: `Check out ${cityName} timezone: ${time} (${offset})\n\nWorld Sync App`,
       })
     }
   }
@@ -115,57 +119,57 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     width: width > 768 ? '22%' : '45%',
-    minWidth: 160,
-    maxWidth: 220,
-    margin: 8,
+    minWidth: Platform.OS === 'web' ? 160 : 80,
+    maxWidth: Platform.OS === 'web' ? 220 : 140,
+    margin: Platform.OS === 'web' ? 8 : 4,
   },
   card: {
-    borderRadius: 20,
+    borderRadius: Platform.OS === 'web' ? 20 : 10,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
     width: '100%',
   },
   cardContent: {
-    padding: 20,
+    padding: Platform.OS === 'web' ? 20 : 10,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: Platform.OS === 'web' ? 12 : 6,
   },
   cityName: {
-    fontSize: 16,
+    fontSize: Platform.OS === 'web' ? 16 : 10,
     fontWeight: '600',
     color: '#ffffff',
     flex: 1,
   },
   dstBadge: {
     backgroundColor: 'rgba(255, 200, 0, 0.3)',
-    paddingHorizontal: 8,
+    paddingHorizontal: Platform.OS === 'web' ? 8 : 6,
     paddingVertical: 2,
     borderRadius: 8,
     marginLeft: 8,
   },
   dstText: {
-    fontSize: 10,
+    fontSize: Platform.OS === 'web' ? 10 : 6,
     color: '#ffc800',
     fontWeight: '700',
   },
   time: {
-    fontSize: 26,
+    fontSize: Platform.OS === 'web' ? 26 : 18,
     fontWeight: '700',
     color: 'lightgreen',
     marginBottom: 4,
   },
   date: {
-    fontSize: 16,
+    fontSize: Platform.OS === 'web' ? 16 : 12,
     color: 'rgba(255, 255, 255, 0.7)',
     marginBottom: 4,
   },
   offset: {
-    fontSize: 12,
+    fontSize: Platform.OS === 'web' ? 12 : 10,
     color: 'rgba(255, 255, 255, 0.5)',
   },
   shareButton: {

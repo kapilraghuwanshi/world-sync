@@ -8,6 +8,12 @@
   "env": {
     "NODE_ENV": "production"
   },
+  "rewrites": [
+    {
+      "source": "/tz/(.*)",
+      "destination": "/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
