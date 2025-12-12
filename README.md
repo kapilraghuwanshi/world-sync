@@ -103,12 +103,6 @@ eas build --platform android
 https://get.geojs.io/v1/ip/geo.json is a free IP geolocation API that returns information about the user's location based on their IP address.
 
 ## 🎯 Roadmap
- 3D globe with auto-rotation
- Location detection
- 4 nearby timezones
- DST support
- Shareable links
- Click country → show timezone
  Search timezones
  Compare multiple times
  Google Ads integration
