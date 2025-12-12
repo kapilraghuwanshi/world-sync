@@ -6,6 +6,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated'
 import { Share2 } from 'lucide-react-native'
 
 const { width } = Dimensions.get('window')
+const isSmallScreen = width < 768
 
 interface TimezoneCardsProps {
   timezones: string[]
@@ -119,57 +120,57 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     width: width > 768 ? '22%' : '45%',
-    minWidth: Platform.OS === 'web' ? 160 : 80,
-    maxWidth: Platform.OS === 'web' ? 220 : 140,
-    margin: Platform.OS === 'web' ? 8 : 4,
+    minWidth: isSmallScreen ? 80 : 160,
+    maxWidth: isSmallScreen ? 140 : 220,
+    margin: isSmallScreen ? 4 : 8,
   },
   card: {
-    borderRadius: Platform.OS === 'web' ? 20 : 10,
+    borderRadius: isSmallScreen ? 10 : 20,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
     width: '100%',
   },
   cardContent: {
-    padding: Platform.OS === 'web' ? 20 : 10,
+    padding: isSmallScreen ? 10 : 20,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: Platform.OS === 'web' ? 12 : 6,
+    marginBottom: isSmallScreen ? 6 : 12,
   },
   cityName: {
-    fontSize: Platform.OS === 'web' ? 16 : 10,
+    fontSize: isSmallScreen ? 10 : 16,
     fontWeight: '600',
     color: '#ffffff',
     flex: 1,
   },
   dstBadge: {
     backgroundColor: 'rgba(255, 200, 0, 0.3)',
-    paddingHorizontal: Platform.OS === 'web' ? 8 : 6,
+    paddingHorizontal: isSmallScreen ? 6 : 8,
     paddingVertical: 2,
     borderRadius: 8,
     marginLeft: 8,
   },
   dstText: {
-    fontSize: Platform.OS === 'web' ? 10 : 6,
+    fontSize: isSmallScreen ? 6 : 10,
     color: '#ffc800',
     fontWeight: '700',
   },
   time: {
-    fontSize: Platform.OS === 'web' ? 26 : 18,
+    fontSize: isSmallScreen ? 18 : 26,
     fontWeight: '700',
     color: 'lightgreen',
     marginBottom: 4,
   },
   date: {
-    fontSize: Platform.OS === 'web' ? 16 : 12,
+    fontSize: isSmallScreen ? 12 : 16,
     color: 'rgba(255, 255, 255, 0.7)',
     marginBottom: 4,
   },
   offset: {
-    fontSize: Platform.OS === 'web' ? 12 : 10,
+    fontSize: isSmallScreen ? 10 : 12,
     color: 'rgba(255, 255, 255, 0.5)',
   },
   shareButton: {

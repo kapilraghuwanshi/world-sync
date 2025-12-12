@@ -8,6 +8,8 @@ import { TimezoneTooltip } from './TimezoneTooltip'
 import { findTimezoneByCoordinates } from '../lib/timezones'
 
 const { width, height } = Dimensions.get('window')
+const isSmallScreen = width < 768
+const globeRadius = isSmallScreen ? 80 : 100
 
 interface GlobeViewProps {
   initialLat: number
@@ -287,7 +289,7 @@ function Globe({
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
       >
-        <sphereGeometry args={[100, 64, 64]} />
+        <sphereGeometry args={[globeRadius, 64, 64]} />
         <meshPhongMaterial
            map={earthTexture}
           bumpMap={bumpTexture}
