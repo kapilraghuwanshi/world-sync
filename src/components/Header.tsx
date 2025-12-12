@@ -12,7 +12,7 @@ export function Header() {
       <BlurView intensity={7} tint="light" style={styles.header}>
         <View style={styles.logoRow}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>🌍 WORLD S</Text>
+            <Text style={styles.title}>🌍 WORLD  S</Text>
             <Text style={styles.thunderEmoji}>⚡</Text>
             <Text style={styles.title}>NC</Text>
           </View>

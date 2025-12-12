@@ -1,4 +1,4 @@
-# ⚡ World S⚡nc
+# World S⚡nc
 
 > Spin the world, find your timezone in a blink!
 
@@ -52,15 +52,52 @@ Interactive 3D globe to explore world timezones in real-time. Built with Expo fo
 # Install dependencies
 npm install
 
+# Start development server (scan QR with Expo Go app)
+npm start
+
 # Start for web
 npm run web
 
-# Start for iOS
+# Start on iOS simulator (Mac only)
 npm run ios
 
-# Start for Android
+# Start on Android emulator
 npm run android
 ```
+
+## 📱 Testing on Mobile Devices
+
+### Easy Way (Recommended)
+1. Install Expo Go app on your phone ([iOS](https://apps.apple.com/app/expo-go/id982107779) | [Android](https://play.google.com/store/apps/details?id=host.exp.exponent))
+2. Run `npm start` in terminal
+3. Scan QR code with your phone
+4. App loads instantly with hot reload! 🎉
+
+### Build Standalone Apps
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment guide
+
+## 🌐 Deployment
+
+### Web (Vercel - Free)
+```bash
+npm run build:web
+cd dist
+vercel --prod
+```
+
+### iOS & Android
+```bash
+# Install EAS CLI
+npm install -g eas-cli
+
+# Build for iOS
+eas build --platform ios
+
+# Build for Android  
+eas build --platform android
+```
+
+**Full deployment guide**: [DEPLOYMENT.md](./DEPLOYMENT.md)
 
 ## 🎯 Geo Location
 https://get.geojs.io/v1/ip/geo.json is a free IP geolocation API that returns information about the user's location based on their IP address.

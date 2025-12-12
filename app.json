@@ -18,7 +18,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.kialabs.worldsync",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "We need your location to show your local timezone on the globe."
+        "NSLocationWhenInUseUsageDescription": "We need your location to show your local timezone on the globe.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -29,7 +30,9 @@
       "package": "com.kialabs.worldsync",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION"
+        "ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
       ]
     },
     "web": {
@@ -48,8 +51,9 @@
     "scheme": "worldsync",
     "extra": {
       "eas": {
-        "projectId": "your-project-id"
+        "projectId": "89fefb0c-b548-489a-b905-c722e20c6ce6"
       }
-    }
+    },
+    "owner": "kapileaghuwanshi"
   }
 }
