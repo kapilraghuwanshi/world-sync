@@ -7,8 +7,11 @@ import { HelmetProvider } from 'react-helmet-async'
 import HomeScreen from './src/screens/HomeScreen'
 import { TimezoneScreen } from './src/screens/TimezoneScreen'
 import { SEOHead } from './src/components/SEOHead'
+import { PrivacyScreen } from './src/screens/PrivacyScreen'
+import { SupportScreen } from './src/screens/SupportScreen'
+import { RootStackParamList } from './src/navigation/types'
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export default function App() {
   return (
@@ -22,6 +25,8 @@ export default function App() {
               screens: {
                 Home: '',
                 Timezone: 'tz/:timezone',
+                Privacy: 'privacy',
+                Support: 'support',
               },
             },
           }}
@@ -34,6 +39,8 @@ export default function App() {
           >
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Timezone" component={TimezoneScreen} />
+            <Stack.Screen name="Privacy" component={PrivacyScreen} />
+            <Stack.Screen name="Support" component={SupportScreen} />
           </Stack.Navigator>
         </NavigationContainer>
         <StatusBar style="light" />

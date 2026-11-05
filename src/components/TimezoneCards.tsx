@@ -102,7 +102,7 @@ function TimezoneCard({ timezone }: { timezone: string }) {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 40,
+    bottom: isSmallScreen ? 88 : 72,
     left: 0,
     right: 0,
     zIndex: 10,  // Add this

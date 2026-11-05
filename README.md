@@ -98,7 +98,7 @@ npm install -g eas-cli
 eas build --platform ios
 
 # Build for Android  
-eas build --platform android
+eas build --platform android --profile production
 ```
 
 **Full deployment guide**: [DEPLOYMENT.md](./DEPLOYMENT.md)

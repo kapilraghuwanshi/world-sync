@@ -1,5 +1,4 @@
 import * as Location from 'expo-location'
-import { Platform } from 'react-native'
 
 export interface UserLocation {
   latitude: number
@@ -9,23 +8,13 @@ export interface UserLocation {
 
 export async function detectUserLocation(): Promise<UserLocation | null> {
   try {
-    // Request permission
     const { status } = await Location.requestForegroundPermissionsAsync()
-    
-    if (status !== 'granted') {
-      // On web, try IP geolocation; on mobile, return null for defaults
-      if (Platform.OS === 'web') {
-        return await getLocationFromIP()
-      }
-      return null
-    }
+    if (status !== 'granted') return null
 
-    // Get current position
     const location = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.Balanced,
     })
 
-    // Use Intl API to get timezone instead of Location.getTimezoneAsync
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
     return {
@@ -35,40 +24,6 @@ export async function detectUserLocation(): Promise<UserLocation | null> {
     }
   } catch (error) {
     console.error('Error getting location:', error)
-    // On web, try IP geolocation as fallback
-    if (Platform.OS === 'web') {
-      return await getLocationFromIP()
-    }
     return null
-  }
-}
-
-async function getLocationFromIP(): Promise<UserLocation | null> {
-  try {
-    // Fallback: Use IP geolocation (web only)
-    if (Platform.OS === 'web') {
-      const response = await fetch('https://get.geojs.io/v1/ip/geo.json')
-      const data = await response.json()
-      
-      return {
-        latitude: parseFloat(data.latitude),
-        longitude: parseFloat(data.longitude),
-        timezone: data.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
-      }
-    }
-    
-    // For mobile without permission, use default timezone
-    return {
-      latitude: 0,
-      longitude: 0,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    }
-  } catch (error) {
-    console.error('IP geolocation failed:', error)
-    return {
-      latitude: 0,
-      longitude: 0,
-      timezone: 'UTC',
-    }
   }
 }

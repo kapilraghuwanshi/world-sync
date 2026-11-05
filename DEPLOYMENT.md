@@ -108,6 +108,8 @@ Users can run your app via Expo Go without App Store:
 ### Prerequisites
 - Google Play Developer Account ($25 one-time)
 - EAS CLI: `npm install -g eas-cli`
+- An Expo account, signed in with `eas login`
+- A Google Play Console app entry using package name `com.kialabs.worldsync`
 
 ### Build APK (Free Distribution)
 ```bash
@@ -119,14 +121,27 @@ eas build --platform android --profile preview
 
 ### Build AAB (Play Store)
 ```bash
-# Build for Google Play Store
-eas build --platform android --profile production
+# Build the signed Android App Bundle for Google Play
+npm run build:android
 ```
 
-### Submit to Play Store
+EAS provides the finished `.aab` download link when the build completes. The
+production profile increments the Android version code for each build. For the
+first release, upload the AAB to the app's **Internal testing** track in Play
+Console and enroll in Play App Signing.
+
+Before rollout, complete the Play Console app listing and required policy forms,
+including the Data safety and content-rating forms. This app requests location
+access; explain its use in the store listing and privacy policy.
+
+### Optional: Submit with EAS
 ```bash
-eas submit --platform android
+npm run submit:android
 ```
+
+Automated submission requires a Google Play service-account key configured with
+EAS. Keep that key private and out of the repository. You can also upload the
+downloaded AAB manually in Play Console.
 
 ### Free Alternative: Direct APK Distribution
 1. Build APK: `eas build --platform android --profile preview`

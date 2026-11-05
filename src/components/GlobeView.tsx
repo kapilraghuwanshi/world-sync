@@ -50,7 +50,7 @@ export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
     }
   }, [isPaused])
 
-  const handleGlobeClick = (event: ThreeEvent<MouseEvent>, meshRef: React.RefObject<THREE.Group>) => {
+  const handleGlobeClick = (event: ThreeEvent<MouseEvent>, meshRef: React.RefObject<THREE.Group | null>) => {
     // Only show tooltip if user didn't drag
     if (hasMoved.current) {
       hasMoved.current = false
@@ -209,7 +209,7 @@ interface GlobeProps {
   rotation: { x: number; y: number }
   isDragging: boolean
   isPaused: boolean
-  onGlobeClick: (event: ThreeEvent<MouseEvent>, meshRef: React.RefObject<THREE.Group>) => void
+  onGlobeClick: (event: ThreeEvent<MouseEvent>, meshRef: React.RefObject<THREE.Group | null>) => void
   onPointerDown: (event: ThreeEvent<PointerEvent>) => void
   onPointerMove: (event: ThreeEvent<PointerEvent>) => void
   onPointerUp: () => void

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101c35"/>
+      <stop offset="1" stop-color="#07111f"/>
+    </linearGradient>
+    <radialGradient id="ocean" cx="37%" cy="32%" r="75%">
+      <stop offset="0" stop-color="#5799ec"/>
+      <stop offset="1" stop-color="#1d43ac"/>
+    </radialGradient>
+    <clipPath id="globe">
+      <circle cx="270" cy="250" r="177"/>
+    </clipPath>
+  </defs>
+  <rect width="1024" height="500" fill="url(#background)"/>
+  <g fill="#eaf3ff" opacity=".7">
+    <circle cx="59" cy="73" r="2"/><circle cx="111" cy="346" r="1.5"/>
+    <circle cx="169" cy="105" r="1.5"/><circle cx="424" cy="80" r="2"/>
+    <circle cx="446" cy="386" r="1.5"/><circle cx="58" cy="412" r="1"/>
+    <circle cx="482" cy="177" r="1.5"/>
+  </g>
+  <circle cx="270" cy="250" r="198" fill="none" stroke="#a9c5e0" stroke-opacity=".27" stroke-width="1.5" stroke-dasharray="4 9"/>
+  <circle cx="270" cy="250" r="177" fill="url(#ocean)"/>
+  <g clip-path="url(#globe)" fill="#244cae" opacity=".58">
+    <path d="M142 143l24-26 35 2 22 17-11 24-24 8-7 26-18 9-12 30-23-8-4-31-16-18 14-21z"/>
+    <path d="M230 255l28-16 29 11 15 31-10 39-20 30-8 43-27-6-5-42-21-26 3-37z"/>
+    <path d="M322 142l28-16 41 13 22 27-9 24-30 4-17 19-25-10-14-26z"/>
+    <path d="M353 267l35-17 29 17 10 39-19 31-5 36-25 16-21-26 8-32-20-26z"/>
+  </g>
+  <g clip-path="url(#globe)" fill="none" stroke="#b6d2fb" stroke-opacity=".55">
+    <path d="M96 250h348" stroke-width="1.5"/>
+    <ellipse cx="270" cy="250" rx="76" ry="177"/>
+    <ellipse cx="270" cy="250" rx="143" ry="177"/>
+    <path d="M104 192c90 34 242 34 332 0M104 308c90-34 242-34 332 0"/>
+  </g>
+  <path d="M270 74v352" stroke="#f4b52b" stroke-opacity=".72" stroke-width="2"/>
+  <path d="M276 120l-27 79h27l-16 85 51-91h-29l10-73z" fill="#ffb31a" stroke="#f28a13" stroke-width="2" stroke-linejoin="round"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#f3f6fb">
+    <text x="535" y="215" font-size="68" font-weight="700" letter-spacing="-2">World Sync</text>
+    <path d="M537 243h72" stroke="#f4b52b" stroke-width="4" stroke-linecap="round"/>
+    <text x="535" y="303" font-size="34" font-weight="400">Spin the world.</text>
+    <text x="535" y="350" font-size="34" font-weight="400" fill="#aed4e8">Find your time.</text>
+  </g>
+</svg>
