@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { ArrowLeft, Globe2 } from 'lucide-react-native'
+import { Ionicons } from '@expo/vector-icons'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../navigation/types'
 
@@ -34,7 +34,7 @@ export function InfoPageLayout({
         <View style={styles.page}>
           <View style={styles.topBar}>
             <View style={styles.brand}>
-              <Globe2 size={19} color="#f4b52b" />
+              <Ionicons name="globe-outline" size={19} color="#f4b52b" />
               <Text style={styles.brandName}>World Sync</Text>
             </View>
             <Pressable
@@ -43,7 +43,7 @@ export function InfoPageLayout({
               onPress={returnToGlobe}
               style={styles.backButton}
             >
-              <ArrowLeft size={16} color="#c6d9e7" />
+              <Ionicons name="arrow-back" size={16} color="#c6d9e7" />
               <Text style={styles.backText}>Back to globe</Text>
             </Pressable>
           </View>

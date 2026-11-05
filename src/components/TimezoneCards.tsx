@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable, Platform, Dimensions } from 'react-n
 import { DateTime } from 'luxon'
 import { BlurView } from 'expo-blur'
 import Animated, { FadeInDown } from 'react-native-reanimated'
-import { Share2 } from 'lucide-react-native'
+import { Ionicons } from '@expo/vector-icons'
 
 const { width } = Dimensions.get('window')
 const isSmallScreen = width < 768
@@ -91,7 +91,7 @@ function TimezoneCard({ timezone }: { timezone: string }) {
           <Text style={styles.offset}>{offset}</Text>
 
           <View style={styles.shareButton}>
-            <Share2 size={16} color="#ffffff80" />
+            <Ionicons name="share-social-outline" size={16} color="#ffffff80" />
           </View>
         </View>
       </BlurView>

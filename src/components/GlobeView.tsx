@@ -1,7 +1,7 @@
 // src/components/GlobeView.tsx
-import React, { useRef, useEffect, useState } from 'react'
-import { View, StyleSheet, Platform, Dimensions } from 'react-native'
-import { Canvas, useFrame, useLoader, ThreeEvent } from '@react-three/fiber/native'
+import React, { useRef, useEffect, useState, Component, ReactNode } from 'react'
+import { View, StyleSheet, Text, Dimensions } from 'react-native'
+import { Canvas, useFrame, ThreeEvent } from '@react-three/fiber/native'
 import * as THREE from 'three'
 import { DateTime } from 'luxon'
 import { TimezoneTooltip } from './TimezoneTooltip'
@@ -23,6 +23,34 @@ interface TooltipData {
   currentTime: string
   x: number
   y: number
+}
+
+class CanvasErrorBoundary extends Component<
+  { children: ReactNode },
+  { hasError: boolean }
+> {
+  state = { hasError: false }
+
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+
+  componentDidCatch(error: any) {
+    console.warn('GlobeView Canvas error:', error)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <View style={styles.fallbackContainer}>
+          <View style={styles.fallbackGlobe}>
+            <Text style={styles.fallbackText}>🌍</Text>
+          </View>
+        </View>
+      )
+    }
+    return this.props.children
+  }
 }
 
 export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
@@ -51,7 +79,6 @@ export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
   }, [isPaused])
 
   const handleGlobeClick = (event: ThreeEvent<MouseEvent>, meshRef: React.RefObject<THREE.Group | null>) => {
-    // Only show tooltip if user didn't drag
     if (hasMoved.current) {
       hasMoved.current = false
       return
@@ -59,29 +86,22 @@ export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
 
     if (!meshRef.current) return
 
-    // Use UV coordinates from the intersection for accurate mapping
     const uv = event.uv
     if (!uv) return
     
-    // Convert UV to lat/lng
-    // UV coordinates: u = 0-1 (longitude), v = 0-1 (latitude from south to north)
-    const lng = (uv.x * 360) - 180  // Convert 0-1 to -180 to 180
-    const lat = (uv.y * 180) - 90   // Convert 0-1 to -90 to 90
+    const lng = (uv.x * 360) - 180
+    const lat = (uv.y * 180) - 90
 
     const location = findTimezoneByCoordinates(lat, lng)
 
     if (location) {
-      
-      // Stop auto-rotation
       setIsPaused(true)
       
       const time = DateTime.now().setZone(location.name).toFormat('HH:mm:ss')
 
-      // Calculate click position from pointer (normalized -1 to 1)
       const clickX = ((event.pointer.x + 1) / 2) * width
       const clickY = ((1 - event.pointer.y) / 2) * height
       
-      // Position tooltip near click but not off-screen
       const tooltipX = Math.max(20, Math.min(clickX - 75, width - 170))
       const tooltipY = Math.max(100, Math.min(clickY - 80, height - 200))
 
@@ -94,12 +114,10 @@ export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
         y: tooltipY,
       })
 
-      // Clear any existing pause timeout
       if (pauseTimeout.current) {
         clearTimeout(pauseTimeout.current)
       }
 
-      // Pause for 10 seconds after click, then resume rotation (tooltip will auto-close)
       pauseTimeout.current = setTimeout(() => {
         setIsPaused(false)
         pauseTimeout.current = null
@@ -113,7 +131,6 @@ export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
     setIsPaused(true)
     hasMoved.current = false
     
-    // Use pointer property which has x and y
     const x = event.pointer.x
     const y = event.pointer.y
     
@@ -124,21 +141,18 @@ export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
   const handlePointerMove = (event: ThreeEvent<PointerEvent>) => {
     if (!isDragging) return
 
-    // Use pointer property for normalized coordinates
     const x = event.pointer.x
     const y = event.pointer.y
     
     const deltaX = x - lastMousePos.current.x
     const deltaY = y - lastMousePos.current.y
 
-    // Check if actually moved
     const totalDist = Math.abs(x - dragStartPos.current.x) +
       Math.abs(y - dragStartPos.current.y)
     if (totalDist > 0.01) {
       hasMoved.current = true
     }
 
-    // Scale movement (pointer is normalized from -1 to 1)
     const newRotation = {
       x: lastRotation.current.x - deltaY * 2,
       y: lastRotation.current.y + deltaX * 2,
@@ -153,12 +167,10 @@ export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
     if (isDragging) {
       setIsDragging(false)
       
-      // Clear any existing pause timeout
       if (pauseTimeout.current) {
         clearTimeout(pauseTimeout.current)
       }
       
-      // Pause for 5 seconds after drag ends
       pauseTimeout.current = setTimeout(() => {
         setIsPaused(false)
         pauseTimeout.current = null
@@ -168,26 +180,28 @@ export function GlobeView({ initialLat, initialLng }: GlobeViewProps) {
 
   return (
     <View style={styles.container}>
-      <Canvas
-        camera={{ position: [0, 0, 300], fov: 50 }}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <ambientLight intensity={2.2} />
-        <pointLight position={[300, 300, 300]} intensity={2.5} />
-        <pointLight position={[-300, -300, -300]} intensity={1.5} />
-        <Stars />
-        <Globe
-          initialLat={initialLat}
-          initialLng={initialLng}
-          rotation={rotation}
-          isDragging={isDragging}
-          isPaused={isPaused}
-          onGlobeClick={handleGlobeClick}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-        />
-      </Canvas>
+      <CanvasErrorBoundary>
+        <Canvas
+          camera={{ position: [0, 0, 300], fov: 50 }}
+          gl={{ antialias: true, alpha: true }}
+        >
+          <ambientLight intensity={2.2} />
+          <pointLight position={[300, 300, 300]} intensity={2.5} />
+          <pointLight position={[-300, -300, -300]} intensity={1.5} />
+          <Stars />
+          <Globe
+            initialLat={initialLat}
+            initialLng={initialLng}
+            rotation={rotation}
+            isDragging={isDragging}
+            isPaused={isPaused}
+            onGlobeClick={handleGlobeClick}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+          />
+        </Canvas>
+      </CanvasErrorBoundary>
 
       {tooltip && (
         <TimezoneTooltip
@@ -229,25 +243,42 @@ function Globe({
   const meshRef = useRef<THREE.Group>(null)
   const autoRotationRef = useRef(0)
 
-  const earthTexture = useLoader(
-    THREE.TextureLoader,
-    // High-quality Earth texture with visible countries
-    'https://raw.githubusercontent.com/turban/webgl-earth/master/images/2_no_clouds_4k.jpg'
-  )
-
-  const bumpTexture = useLoader(
-    THREE.TextureLoader,
-    'https://unpkg.com/three-globe@2.31.0/example/img/earth-topology.png'
-  )
-
-  // Add specular map for ocean shine
-  const specularTexture = useLoader(
-    THREE.TextureLoader,
-    'https://unpkg.com/three-globe@2.31.0/example/img/earth-water.png'
-  )
+  const [textures, setTextures] = useState<{
+    earth?: THREE.Texture
+    bump?: THREE.Texture
+    specular?: THREE.Texture
+  }>({})
 
   useEffect(() => {
-    // Only set initial rotation once when component mounts
+    let isMounted = true
+    const loader = new THREE.TextureLoader()
+
+    const loadTexture = (url: string) =>
+      new Promise<THREE.Texture | undefined>((resolve) => {
+        loader.load(
+          url,
+          (tex) => resolve(tex),
+          undefined,
+          () => resolve(undefined)
+        )
+      })
+
+    Promise.all([
+      loadTexture('https://raw.githubusercontent.com/turban/webgl-earth/master/images/2_no_clouds_4k.jpg'),
+      loadTexture('https://unpkg.com/three-globe@2.31.0/example/img/earth-topology.png'),
+      loadTexture('https://unpkg.com/three-globe@2.31.0/example/img/earth-water.png')
+    ]).then(([earth, bump, specular]) => {
+      if (isMounted) {
+        setTextures({ earth, bump, specular })
+      }
+    }).catch(() => {})
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  useEffect(() => {
     if (meshRef.current && autoRotationRef.current === 0) {
       const phi = (90 - initialLat) * (Math.PI / 180)
       const theta = (initialLng + 180) * (Math.PI / 180)
@@ -256,14 +287,13 @@ function Globe({
       meshRef.current.rotation.y = -theta
       autoRotationRef.current = meshRef.current.rotation.y
     }
-  }, [])
+  }, [initialLat, initialLng])
 
   useFrame((state, delta) => {
     if (!meshRef.current) return
 
     try {
       if (isDragging) {
-        // Apply manual rotation during drag with safe values
         const clampedX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, rotation.x))
         const normalizedY = rotation.y % (Math.PI * 2)
         
@@ -271,12 +301,11 @@ function Globe({
         meshRef.current.rotation.y = normalizedY
         autoRotationRef.current = normalizedY
       } else if (!isPaused) {
-        // Auto-rotate only when not paused
-        autoRotationRef.current += delta * 0.1
+        autoRotationRef.current += delta * 0.12
         meshRef.current.rotation.y = autoRotationRef.current
       }
     } catch (error) {
-      console.error('Error updating globe rotation:', error)
+      // safe fallback
     }
   })
 
@@ -291,15 +320,29 @@ function Globe({
       >
         <sphereGeometry args={[globeRadius, 64, 64]} />
         <meshPhongMaterial
-           map={earthTexture}
-          bumpMap={bumpTexture}
-          bumpScale={1.0}
-          specularMap={specularTexture}
-          specular={new THREE.Color('#666666')}
-          shininess={15}
+          color={textures.earth ? '#ffffff' : '#1e3a8a'}
+          map={textures.earth || null}
+          bumpMap={textures.bump || null}
+          bumpScale={textures.bump ? 0.8 : 0}
+          specularMap={textures.specular || null}
+          specular={new THREE.Color('#4466aa')}
+          shininess={25}
+          emissive={new THREE.Color('#0a192f')}
+          emissiveIntensity={0.2}
         />
       </mesh>
       
+      {/* Atmosphere Glow */}
+      <mesh>
+        <sphereGeometry args={[globeRadius * 1.02, 32, 32]} />
+        <meshBasicMaterial
+          color="#38bdf8"
+          transparent={true}
+          opacity={0.15}
+          side={THREE.BackSide}
+        />
+      </mesh>
+
       {/* Equator line */}
       <Equator />
       
@@ -311,7 +354,7 @@ function Globe({
 
 function Equator() {
   const points = []
-  const radius = 101 // Slightly larger than globe to be visible
+  const radius = 101
   
   for (let i = 0; i <= 360; i += 2) {
     const angle = (i * Math.PI) / 180
@@ -340,17 +383,13 @@ function PrimeMeridian() {
   const points = []
   const radius = 101
   
-  // Prime Meridian runs from North to South pole through Greenwich (0° longitude)
-  // In spherical coordinates: longitude = 0° means x and z relationship
   for (let i = 0; i <= 360; i += 2) {
     const angle = (i * Math.PI) / 180
-    // For Prime Meridian: vary latitude (y), keep longitude at 0
-    // At lng=0: x should relate to z based on texture orientation
     points.push(
       new THREE.Vector3(
-        radius * Math.sin(angle), // x varies with latitude for meridian
-        radius * Math.cos(angle), // y is the vertical (latitude)
-        0 // z = 0 for the front-facing meridian (0° longitude)
+        radius * Math.sin(angle),
+        radius * Math.cos(angle),
+        0
       )
     )
   }
@@ -399,5 +438,21 @@ const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 0,
+  },
+  fallbackContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  fallbackGlobe: {
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#0f172a',
+  },
+  fallbackText: {
+    fontSize: 80,
   },
 })

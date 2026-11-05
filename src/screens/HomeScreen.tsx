@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Dimensions, Pressable, Modal, Share, Linking } from 'react-native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { Mail, Linkedin, Twitter, Github, Globe, ShieldCheck, LifeBuoy, Share2 } from 'lucide-react-native'
+import { Ionicons, Feather, FontAwesome } from '@expo/vector-icons'
 import { GlobeView } from '../components/GlobeView'
 import { Header } from '../components/Header'
 import { TimezoneCards } from '../components/TimezoneCards'
@@ -65,7 +65,7 @@ export default function HomeScreen({ navigation }: { navigation: NativeStackNavi
         <View style={styles.modalBackdrop}>
           <View style={styles.locationDialog} accessibilityViewIsModal>
             <View style={styles.locationIcon}>
-              <Globe size={22} color="#f4b52b" />
+              <Ionicons name="globe-outline" size={22} color="#f4b52b" />
             </View>
             <Text style={styles.locationTitle}>Center your view?</Text>
             <Text style={styles.locationCopy}>
@@ -110,7 +110,7 @@ export default function HomeScreen({ navigation }: { navigation: NativeStackNavi
               style={styles.socialButton}
               onPress={() => Linking.openURL('mailto:kapilraghuwanshi5@gmail.com')}
             >
-              <Mail size={14} color="rgba(255, 255, 255, 0.6)" />
+              <Feather name="mail" size={14} color="rgba(255, 255, 255, 0.6)" />
             </Pressable>
             <Pressable
               accessibilityRole="link"
@@ -118,7 +118,7 @@ export default function HomeScreen({ navigation }: { navigation: NativeStackNavi
               style={styles.socialButton}
               onPress={() => Linking.openURL('https://linkedin.com/in/kapilraghuwanshi')}
             >
-              <Linkedin size={14} color="rgba(255, 255, 255, 0.6)" />
+              <FontAwesome name="linkedin-square" size={14} color="rgba(255, 255, 255, 0.6)" />
             </Pressable>
             <Pressable
               accessibilityRole="link"
@@ -126,7 +126,7 @@ export default function HomeScreen({ navigation }: { navigation: NativeStackNavi
               style={styles.socialButton}
               onPress={() => Linking.openURL('https://x.com/techygeeeky')}
             >
-              <Twitter size={14} color="rgba(255, 255, 255, 0.6)" />
+              <FontAwesome name="twitter" size={14} color="rgba(255, 255, 255, 0.6)" />
             </Pressable>
             <Pressable
               accessibilityRole="link"
@@ -134,7 +134,7 @@ export default function HomeScreen({ navigation }: { navigation: NativeStackNavi
               style={styles.socialButton}
               onPress={() => Linking.openURL('https://github.com/kapilraghuwanshi')}
             >
-              <Github size={14} color="rgba(255, 255, 255, 0.6)" />
+              <FontAwesome name="github" size={14} color="rgba(255, 255, 255, 0.6)" />
             </Pressable>
           </View>
         </View>
@@ -144,7 +144,7 @@ export default function HomeScreen({ navigation }: { navigation: NativeStackNavi
             onPress={() => navigation.navigate('Privacy')}
             style={styles.footerLink}
           >
-            <ShieldCheck size={13} color="#b9d8e7" />
+            <Ionicons name="shield-checkmark-outline" size={13} color="#b9d8e7" />
             <Text style={styles.footerLinkText}>Privacy</Text>
           </Pressable>
           <Pressable
@@ -152,7 +152,7 @@ export default function HomeScreen({ navigation }: { navigation: NativeStackNavi
             onPress={() => navigation.navigate('Support')}
             style={styles.footerLink}
           >
-            <LifeBuoy size={13} color="#b9d8e7" />
+            <Ionicons name="help-buoy-outline" size={13} color="#b9d8e7" />
             <Text style={styles.footerLinkText}>Support</Text>
           </Pressable>
           <Pressable
@@ -160,7 +160,7 @@ export default function HomeScreen({ navigation }: { navigation: NativeStackNavi
             onPress={shareApp}
             style={styles.footerLink}
           >
-            <Share2 size={13} color="#b9d8e7" />
+            <Ionicons name="share-social-outline" size={13} color="#b9d8e7" />
             <Text style={styles.footerLinkText}>Share app</Text>
           </Pressable>
         </View>
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   globeContainer: {
-    flex: 1,  // Keep it as flex: 1, not position: absolute
+    flex: 1,
     width: width,
   },
   footer: {
