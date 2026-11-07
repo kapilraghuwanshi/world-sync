@@ -1,119 +1,70 @@
-# World S⚡nc
+# World Sync
 
 > Spin the world, find your timezone in a blink!
 
-Interactive 3D globe to explore world timezones in real-time. Built with Expo for web, iOS, and Android.
+World Sync is an interactive 3D globe for exploring locations and comparing live time across the world. The web app is published at **[world-syncc.vercel.app](https://world-syncc.vercel.app/)**.
 
-<img width="1208" height="910" alt="World Sync" src="https://github.com/user-attachments/assets/d4361379-02d9-4b6c-b506-b37a0bed216b" />
+Get the Android app on [Google Play](https://play.google.com/store/apps/details?id=com.kialabs.worldsync).
 
-https://github.com/user-attachments/assets/b7f1475c-a48c-4e49-93b5-94b7113d2fd9
+<p align="center">
+  <img width="720" alt="World Sync interactive globe" src="https://github.com/user-attachments/assets/d4361379-02d9-4b6c-b506-b37a0bed216b" />
+</p>
 
-## 📦 Tech Stack
-- **Expo** ~54.0.27 - Universal app framework
-- **React Native** 0.76.5 + **TypeScript**
-- **Three.js** + **React Three Fiber** - 3D graphics
-- **Luxon** - Timezone & datetime handling
-- **Zustand** - Lightweight state management
-- **Expo Location** - Geolocation
-- **React Navigation** - Routing & deep linking
+## Features
 
-## ✨ Features
+- Drag and spin a textured 3D globe with an automatic rotation.
+- Select a location on the globe to see its city and time zone when available.
+- Compare live clocks for four time zones; optionally use browser location to center the globe and find nearby time zones.
+- Use the privacy and support pages at [`/privacy`](https://world-syncc.vercel.app/privacy) and [`/support`](https://world-syncc.vercel.app/support).
+- Responsive dark interface with timezone cards and a star field.
 
-### 🌍 Interactive Globe
-- Realistic 3D Earth with NASA Blue Marble texture
-- Smooth drag rotation (horizontal & vertical)
-- Auto-rotation with smart pause system
-- Visible country borders & topography
-- 5000 animated background stars
+## Privacy
 
-### 📍 Location Detection
-- Click anywhere on globe to detect timezone
-- UV-based coordinate mapping for accuracy
-- 50+ major cities worldwide coverage
-- Smart pause: 10s after click, 5s after drag
-- Tooltip auto-closes when rotation resumes
+Location access is optional. If granted, the app uses the browser's location while open to center the globe and select nearby time zones. Coordinates remain on the device and are not sent to World Sync servers. The app does not use IP-based geolocation, accounts, advertising SDKs, or analytics.
 
-### 🧭 Reference Lines
-- Prime Meridian (0° longitude) - Greenwich to South Pole
-- Equator (0° latitude) - across Africa, South America, Asia
-- Golden semi-transparent styling
+The globe loads Earth imagery from jsdelivr.net and supporting textures from unpkg.com. As described in the [privacy policy](https://world-syncc.vercel.app/privacy), these providers may receive your IP address and standard request information.
 
-### 🕐 Live Timezone Display
-- 4 nearby timezone cards with live clocks
-- Real-time updates every second
-- City, country, and timezone info
-- Glassmorphism UI with blur effects
+## Tech Stack
 
-### 🎨 Design
-- Elegant "World S⚡nc" header with rotated thunder emoji
-- Dark theme with gradient backgrounds
-- Responsive layout for all screen sizes
-- Smooth animations with React Native Reanimated
+- Expo SDK 54 and React Native Web
+- React 19 and TypeScript
+- Three.js and React Three Fiber
+- Luxon for timezone and date handling
+- React Navigation for in-app routes
 
-## 🚀 Quick Start
+## Run Locally
 
 ```bash
-# Install dependencies
 npm install
-
-# Start development server (scan QR with Expo Go app)
-npm start
-
-# Start for web
 npm run web
-
-# Start on iOS simulator (Mac only)
-npm run ios
-
-# Start on Android emulator
-npm run android
 ```
 
-## 📱 Testing on Mobile Devices
+The Expo development server will provide a local web URL.
 
-### Easy Way (Recommended)
-1. Install Expo Go app on your phone ([iOS](https://apps.apple.com/app/expo-go/id982107779) | [Android](https://play.google.com/store/apps/details?id=host.exp.exponent))
-2. Run `npm start` in terminal
-3. Scan QR code with your phone
-4. App loads instantly with hot reload! 🎉
+To create a production web export:
 
-### Build Standalone Apps
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment guide
-
-## 🌐 Deployment
-
-### Web (Vercel - Free)
 ```bash
 npm run build:web
-cd dist
-vercel --prod
 ```
 
-### iOS & Android
+The static website is generated in `dist/`.
+
+## Deploy to Vercel
+
+The project is configured in [`vercel.json`](./vercel.json) to build the web export from the repository root and publish `dist/`. Sign in with the Vercel CLI, link this repository to the existing Vercel project if needed, then deploy:
+
 ```bash
-# Install EAS CLI
-npm install -g eas-cli
-
-# Build for iOS
-eas build --platform ios
-
-# Build for Android  
-eas build --platform android --profile production
+npx vercel login
+npx vercel link
+npx vercel --prod
 ```
 
-**Full deployment guide**: [DEPLOYMENT.md](./DEPLOYMENT.md)
+The deployed site is [world-syncc.vercel.app](https://world-syncc.vercel.app/).
 
-## 🎯 Geo Location
-https://get.geojs.io/v1/ip/geo.json is a free IP geolocation API that returns information about the user's location based on their IP address.
+## Secrets
 
-## 🎯 Roadmap
- Search timezones
- Compare multiple times
- Google Ads integration
+The current web app does not require API keys. Never commit access tokens, credentials, signing keys, or local `.env` files. Keep any future local secrets in ignored environment files and document required variable names with empty placeholders in `.env.example`.
 
-##  🤝 Contributing
-Fork the repo
-Create your feature branch
-Commit your changes
-Push to the branch
-Open a Pull Request
+## Contributing
+
+Issues and pull requests are welcome. Please keep changes focused and do not include credentials or other private information in contributions.

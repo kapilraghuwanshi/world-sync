@@ -1,9 +1,10 @@
 // src/components/GlobeView.tsx
 import React, { useRef, useEffect, useState, Component, ReactNode } from 'react'
 import { View, StyleSheet, Text, Dimensions } from 'react-native'
-import { Canvas, useFrame, ThreeEvent } from '@react-three/fiber/native'
+import type { ThreeEvent } from '@react-three/fiber'
 import * as THREE from 'three'
 import { DateTime } from 'luxon'
+import { Canvas, useFrame, useLoader } from './GlobeCanvas'
 import { TimezoneTooltip } from './TimezoneTooltip'
 import { findTimezoneByCoordinates } from '../lib/timezones'
 
@@ -243,40 +244,14 @@ function Globe({
   const meshRef = useRef<THREE.Group>(null)
   const autoRotationRef = useRef(0)
 
-  const [textures, setTextures] = useState<{
-    earth?: THREE.Texture
-    bump?: THREE.Texture
-    specular?: THREE.Texture
-  }>({})
-
-  useEffect(() => {
-    let isMounted = true
-    const loader = new THREE.TextureLoader()
-
-    const loadTexture = (url: string) =>
-      new Promise<THREE.Texture | undefined>((resolve) => {
-        loader.load(
-          url,
-          (tex) => resolve(tex),
-          undefined,
-          () => resolve(undefined)
-        )
-      })
-
-    Promise.all([
-      loadTexture('https://raw.githubusercontent.com/turban/webgl-earth/master/images/2_no_clouds_4k.jpg'),
-      loadTexture('https://unpkg.com/three-globe@2.31.0/example/img/earth-topology.png'),
-      loadTexture('https://unpkg.com/three-globe@2.31.0/example/img/earth-water.png')
-    ]).then(([earth, bump, specular]) => {
-      if (isMounted) {
-        setTextures({ earth, bump, specular })
-      }
-    }).catch(() => {})
-
-    return () => {
-      isMounted = false
-    }
-  }, [])
+  const [earthTexture, bumpTexture, specularTexture] = useLoader(
+    THREE.TextureLoader,
+    [
+      'https://cdn.jsdelivr.net/gh/turban/webgl-earth@master/images/2_no_clouds_4k.jpg',
+      'https://unpkg.com/three-globe@2.31.0/example/img/earth-topology.png',
+      'https://unpkg.com/three-globe@2.31.0/example/img/earth-water.png',
+    ]
+  )
 
   useEffect(() => {
     if (meshRef.current && autoRotationRef.current === 0) {
@@ -320,11 +295,10 @@ function Globe({
       >
         <sphereGeometry args={[globeRadius, 64, 64]} />
         <meshPhongMaterial
-          color={textures.earth ? '#ffffff' : '#1e3a8a'}
-          map={textures.earth || null}
-          bumpMap={textures.bump || null}
-          bumpScale={textures.bump ? 0.8 : 0}
-          specularMap={textures.specular || null}
+          map={earthTexture}
+          bumpMap={bumpTexture}
+          bumpScale={0.8}
+          specularMap={specularTexture}
           specular={new THREE.Color('#4466aa')}
           shininess={25}
           emissive={new THREE.Color('#0a192f')}

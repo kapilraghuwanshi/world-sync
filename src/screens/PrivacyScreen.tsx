@@ -45,10 +45,11 @@ export function PrivacyScreen({ navigation }: Props) {
 
         <InfoSection title="Information handled by other services">
           <InfoParagraph>
-            The globe loads map textures from raw.githubusercontent.com and unpkg.com. When those
-            images load, the providers may receive your IP address and standard request information,
-            such as the time and requested image. The website host and app stores may also receive
-            ordinary technical information when you visit or download the app.
+            The globe loads Earth imagery from jsdelivr.net and supporting map textures from
+            unpkg.com. When those images load, the providers may receive your IP address and
+            standard request information, such as the time and requested image. The website host
+            and app stores may also receive ordinary technical information when you visit or
+            download the app.
           </InfoParagraph>
           <InfoParagraph>
             These providers handle information under their own privacy policies. World Sync does

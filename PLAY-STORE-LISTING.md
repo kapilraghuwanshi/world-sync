@@ -57,9 +57,9 @@ chooses **Use my location**. The app uses that location in the current session
 and does not send coordinates to World Sync servers. The web IP-geolocation
 fallback has been removed.
 
-The globe loads texture images from `raw.githubusercontent.com` and `unpkg.com`.
-Those hosts may receive standard request information, including the user's IP
-address. The website host and app stores may also receive ordinary technical
+The globe loads Earth imagery from `cdn.jsdelivr.net` and supporting texture
+images from `unpkg.com`. Those hosts may receive standard request information,
+including the user's IP address. The website host and app stores may also receive ordinary technical
 request information. Disclose these providers in the privacy policy and
 answer Play Console's Data safety questions based on the final release and
 every included SDK/service. In particular, review whether the automatic

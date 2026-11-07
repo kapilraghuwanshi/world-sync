@@ -1,0 +1,10 @@
+.git
+.vercel
+.expo
+node_modules
+dist
+android
+ios
+*.aab
+*.apk
+.env*
